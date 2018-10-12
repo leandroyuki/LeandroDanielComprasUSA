@@ -19,6 +19,7 @@
 		2E8B0558216B15F900FCC47E /* UIViewController+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8B0557216B15F900FCC47E /* UIViewController+CoreData.swift */; };
 		2EC79E06216B2C910060F249 /* StateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC79E05216B2C910060F249 /* StateTableViewCell.swift */; };
 		2EC79E08216B32F40060F249 /* ProductTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC79E07216B32F40060F249 /* ProductTableViewCell.swift */; };
+		2EC8A459216C609C00B6B374 /* SumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC8A458216C609C00B6B374 /* SumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		2E8B0557216B15F900FCC47E /* UIViewController+CoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+CoreData.swift"; sourceTree = "<group>"; };
 		2EC79E05216B2C910060F249 /* StateTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateTableViewCell.swift; sourceTree = "<group>"; };
 		2EC79E07216B32F40060F249 /* ProductTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTableViewCell.swift; sourceTree = "<group>"; };
+		2EC8A458216C609C00B6B374 /* SumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 				2E8B0557216B15F900FCC47E /* UIViewController+CoreData.swift */,
 				2EC79E05216B2C910060F249 /* StateTableViewCell.swift */,
 				2EC79E07216B32F40060F249 /* ProductTableViewCell.swift */,
+				2EC8A458216C609C00B6B374 /* SumViewController.swift */,
 				2E8B054D216AF8A800FCC47E /* Settings.bundle */,
 			);
 			path = ComprasUSA;
@@ -160,6 +163,7 @@
 				2E8B0539216ACB0D00FCC47E /* ViewController.swift in Sources */,
 				2EC79E08216B32F40060F249 /* ProductTableViewCell.swift in Sources */,
 				2E8B053F216ACB0D00FCC47E /* ComprasUSA.xcdatamodeld in Sources */,
+				2EC8A459216C609C00B6B374 /* SumViewController.swift in Sources */,
 				2E8B054C216ACCC700FCC47E /* ProductTableViewController.swift in Sources */,
 				2E8B0558216B15F900FCC47E /* UIViewController+CoreData.swift in Sources */,
 				2E8B0550216B049F00FCC47E /* RegistryProductViewController.swift in Sources */,
