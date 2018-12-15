@@ -25,6 +25,16 @@ class SumViewController: UIViewController {
         updateScreenValues()
     }
     
+    func checkDefaults(){
+        //se nao tiver valor setado correto coloca default
+        if(ud.string(forKey: "dolar") == nil){
+            ud.set("4", forKey: "dolar")
+        }
+        if(ud.string(forKey: "iof") == nil){
+            ud.set("3", forKey: "iof")
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         sumProductValues()

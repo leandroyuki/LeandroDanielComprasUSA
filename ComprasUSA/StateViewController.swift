@@ -36,35 +36,42 @@ class StateViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func loadVerifyDefaults(){
         var isOk = true
-        let dolar = ud.string(forKey: "dolar")
-        let iof = ud.string(forKey: "iof")
+        //se nao tiver valor setado correto coloca default
+        if(ud.string(forKey: "dolar") == nil){
+            ud.set("4", forKey: "dolar")
+        }
+        if(ud.string(forKey: "iof") == nil){
+            ud.set("3", forKey: "iof")
+        }
+        let dolar = ud.string(forKey: "dolar") ?? "4"
+        let iof = ud.string(forKey: "iof") ?? "3"
         
-        if let dolarNum = Double(dolar!){
+        if let dolarNum = Double(dolar){
             if(dolarNum <= 0){
                 isOk = false
-                ud.set("1", forKey: "dolar")
+                ud.set("4", forKey: "dolar")
             }
         }else{
             isOk = false
-            ud.set("1", forKey: "dolar")
+            ud.set("4", forKey: "dolar")
         }
         
-        if let iofNum = Double(iof!){
+        if let iofNum = Double(iof){
             if(iofNum < 0){
                 isOk = false
-                ud.set("0", forKey: "iof")
+                ud.set("3", forKey: "iof")
             }
         }else{
             isOk = false
-            ud.set("0", forKey: "iof")
+            ud.set("3", forKey: "iof")
         }
         
         if(!isOk){
             self.present(ViewController.buildAlert(title:"Configuracoes incompativeis! Valores retornados para padrão",message:"O valor de dólar e IOF devem ser numericos, decimais e positivos. O dólar não pode ser nulo, IOF pode"), animated: true, completion: nil)
         }
         
-        tfdolar.text = ud.string(forKey: "dolar")
-        tfIOF.text = ud.string(forKey: "iof")
+        tfdolar.text = dolar
+        tfIOF.text = iof
     }
     
     @IBAction func DolarChanged(_ sender: UITextField) {
