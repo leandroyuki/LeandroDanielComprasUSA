@@ -31,12 +31,13 @@ class ProductTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         tableView.backgroundView = fetchedResultController.fetchedObjects?.count == 0 ? label : nil
+        tableView.backgroundView = fetchedResultController.fetchedObjects?.count == 0 ? label : nil
         return fetchedResultController.fetchedObjects?.count ?? 0
     }
     
     private func loadProducts() {
         let fetchRequest: NSFetchRequest<Product> = Product.fetchRequest()
+        print("itens na lista: \(fetchRequest.fetchBatchSize)")
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         
@@ -47,6 +48,17 @@ class ProductTableViewController: UITableViewController {
             try fetchedResultController.performFetch()
         } catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // da crash se nao tiver indice selecionado, porque tem 2 segues, 1 pro botao e 1 pro click no item
+        if let row = tableView.indexPathForSelectedRow?.row {
+            if(row >= 0){
+                if let vc = segue.destination as? RegistryProductViewController {
+                    vc.product = fetchedResultController.object(at: tableView.indexPathForSelectedRow!)
+                }
+            }
         }
     }
         
@@ -62,9 +74,9 @@ class ProductTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            let movie = fetchedResultController.object(at: indexPath)
+            let product = fetchedResultController.object(at: indexPath)
             do {
-                context.delete(movie)
+                context.delete(product)
                 try context.save()
             } catch {
                 print(error.localizedDescription)

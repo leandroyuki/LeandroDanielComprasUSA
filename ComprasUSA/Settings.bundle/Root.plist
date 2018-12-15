@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>StringsTable</key>
-	<string>Root</string>
+	<key>Title</key>
+	<string></string>
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
@@ -15,6 +15,8 @@
 			<string>dolar</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
+			<key>DefaultValue</key>
+			<string>4</string>
 		</dict>
 		<dict>
 			<key>Type</key>
@@ -25,6 +27,8 @@
 			<string>iof</string>
 			<key>KeyboardType</key>
 			<string>NumbersAndPunctuation</string>
+			<key>DefaultValue</key>
+			<string>3</string>
 		</dict>
 	</array>
 </dict>
