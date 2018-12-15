@@ -128,6 +128,11 @@ class RegistryProductViewController: UIViewController {
             self.present(ViewController.buildAlert(title:"O produto precisa ser um valor numerico!",message:"O valor deve ser apenas numeros"), animated: true, completion: nil)
             return
         }
+        if(tfProductState.text == ""){
+            self.present(ViewController.buildAlert(title:"O produto precisa de algum estado!",message:"Cadastre ou escolha um estado com seu devido imposto, produtos Duty Free entrarão na próxima versão do app ;)"), animated: true, completion: nil)
+            return
+        }
+        product.state = state
         product.creditCard = swCreditCard.isOn
         
         do {
@@ -148,6 +153,7 @@ class RegistryProductViewController: UIViewController {
             tfProductName.text = product.name
             tfProductValue.text = String(product.value)
             swCreditCard.isOn = product.creditCard
+            tfProductState.text = product.state?.name
             ivProductImage.image = product.image as? UIImage
             btRegistryProduct.setTitle("Atualizar", for:.normal)            
         }else{
@@ -193,7 +199,12 @@ class RegistryProductViewController: UIViewController {
     }
     
     @objc func done() {
-        let state = states[pickerView.selectedRow(inComponent: 0)]
+        let position = pickerView.selectedRow(inComponent: 0)
+        if(position == 0){
+            cancel()
+            return
+        }
+        let state = states[position]
         tfProductState.text = state.name
         cancel()
     }
@@ -241,14 +252,15 @@ extension RegistryProductViewController: UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-       return fetchedResultController.fetchedObjects?.count ?? 0
+        loadStates()
+        return states.count
     }
     
 }
 
 extension RegistryProductViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> State? {
-        return states[row]
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return states[row].name
     }
 }
 
