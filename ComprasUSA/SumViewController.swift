@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Foundation
 
 class SumViewController: UIViewController {
 
@@ -35,8 +36,8 @@ class SumViewController: UIViewController {
     }
     
     func updateScreenValues(){
-        lbRealSum.text = formatCurrency(value:totalBRL)
-        lbDolarSum.text = formatCurrency(value:totalUSD)
+        lbRealSum.text = String(format:"%.2f",totalBRL)
+        lbDolarSum.text = String(format:"%.2f",totalUSD)
     }
     
     var fetchedResultController: NSFetchedResultsController<Product>!
@@ -59,25 +60,23 @@ class SumViewController: UIViewController {
             let dolar = ud.double(forKey: "dolar")
             totalBRL = 0
             totalUSD = 0
+            
             //ok, vamos la
             for product in products{
-                var value:Double = product.value
-                totalUSD += value //valor do dolar segue bruto, sem impostos
+                var valueUS:Double = product.value
+                totalUSD += valueUS //valor do dolar segue bruto, sem impostos
                 
-                //o estado pode ter sido deletado, para nao apagar a compra do usuario calculamos sem o imposto do estado
+                //o estado pode ter sido deletado, para nao apagar a compra do usuario calculamos sem o imposto do estado caso ele nao exista
                 if let tax = product.state?.tax{
-                    totalBRL += (value * dolar) + (value * dolar)*(iof/100)
+                    valueUS = (valueUS * dolar) +  (valueUS * dolar * tax/100) //valor total no USA com o imposto do estado
                 }else{
-                    
+                    valueUS = (valueUS * dolar)  // executa apenas a conversao de dolar para real
                 }
                 
-                
-                if(product.creditCard || iof != 0){
-                    totalUSD += (value * dolar) + (value * dolar)*(iof/100)
-                    //totalUSD += (value * dolar * tax)
+                if(product.creditCard ){
+                    totalBRL += valueUS + valueUS * (iof/100) // adicionado o IOF se cartao de credito
                 }else{
-                    totalUSD += (value * dolar) + (value * dolar)*(iof/100)
-                    //totalUSD += (value * dolar * tax) + (value * dolar)(iof/100)
+                    totalBRL += valueUS //no brasil o total é adicionado o IOF
                 }
             }
             
@@ -86,15 +85,7 @@ class SumViewController: UIViewController {
         }
     }
     
-    //pra referencia https://stackoverflow.com/questions/39458003/swift-3-and-numberformatter-currency-%C2%A4
-    func formatCurrency(value: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.maximumFractionDigits = 2
-        formatter.locale = Locale(identifier: Locale.current.identifier)
-        let result = formatter.string(from: value as NSNumber)
-        return result!
-    }
+    
 }
 
 extension SumViewController: NSFetchedResultsControllerDelegate {
