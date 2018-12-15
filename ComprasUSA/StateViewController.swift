@@ -28,12 +28,70 @@ class StateViewController: UIViewController, UITableViewDelegate, UITableViewDat
     }()
     
     let ud = UserDefaults.standard
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    func saveDefaults(){
+        ud.set(tfdolar.text!, forKey: "dolar")
+        ud.set(tfIOF.text!, forKey: "iof")
+    }
+    
+    func loadVerifyDefaults(){
+        var isOk = true
+        let dolar = ud.string(forKey: "dolar")
+        let iof = ud.string(forKey: "iof")
+        
+        if let dolarNum = Double(dolar!){
+            if(dolarNum <= 0){
+                isOk = false
+                ud.set("1", forKey: "dolar")
+            }
+        }else{
+            isOk = false
+            ud.set("1", forKey: "dolar")
+        }
+        
+        if let iofNum = Double(iof!){
+            if(iofNum < 0){
+                isOk = false
+                ud.set("0", forKey: "iof")
+            }
+        }else{
+            isOk = false
+            ud.set("0", forKey: "iof")
+        }
+        
+        if(!isOk){
+            self.present(ViewController.buildAlert(title:"Configuracoes incompativeis! Valores retornados para padrão",message:"O valor de dólar e IOF devem ser numericos, decimais e positivos. O dólar não pode ser nulo, IOF pode"), animated: true, completion: nil)
+        }
+        
         tfdolar.text = ud.string(forKey: "dolar")
         tfIOF.text = ud.string(forKey: "iof")
+    }
+    
+    @IBAction func DolarChanged(_ sender: UITextField) {
+        saveDefaults()
+        loadVerifyDefaults()
+    }
+    
+    @IBAction func IOFChanged(_ sender: UITextField) {
+        saveDefaults()
+        loadVerifyDefaults()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        loadVerifyDefaults()
+                
         self.tvStateList.delegate = self
         self.loadStates()
+    }
+    
+    /*/func textFieldDidChange(_ textField: UITextField) {
+        loadVerifyDefaults()
+    }*/
+    
+    override func viewWillAppear(_ animated: Bool) {
+        loadVerifyDefaults()
     }
     
     @IBOutlet weak var tvStateList: UITableView!

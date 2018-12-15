@@ -13,7 +13,7 @@
         <!--Lista de compras-->
         <scene sceneID="SlU-ep-zC3">
             <objects>
-                <tableViewController id="mgv-Wz-2Yg" customClass="ProductTableViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="mgv-Wz-2Yg" customClass="ProductTableViewController" customModule="DanielLeandro" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="reh-0j-vUc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -24,7 +24,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="productCell" rowHeight="77" id="tye-yu-XTM" customClass="ProductTableViewCell" customModule="ComprasUSA" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="productCell" rowHeight="77" id="tye-yu-XTM" customClass="ProductTableViewCell" customModule="DanielLeandro" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="77"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tye-yu-XTM" id="Scy-nA-Ffl">
@@ -101,7 +101,7 @@
         <!--Cadastrar Produto-->
         <scene sceneID="38a-tJ-9u5">
             <objects>
-                <viewController id="nMz-Vo-TF2" customClass="RegistryProductViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="nMz-Vo-TF2" customClass="RegistryProductViewController" customModule="DanielLeandro" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PO4-tf-JDW">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -257,7 +257,7 @@
         <!--Total da Compra-->
         <scene sceneID="bSf-QB-j3y">
             <objects>
-                <viewController id="J8i-F1-Cb4" customClass="SumViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="J8i-F1-Cb4" customClass="SumViewController" customModule="DanielLeandro" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gYT-df-rgT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -320,7 +320,7 @@
         <!--Ajustes-->
         <scene sceneID="F3z-wv-hg2">
             <objects>
-                <viewController id="ycS-13-R0r" customClass="StateViewController" customModule="ComprasUSA" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ycS-13-R0r" customClass="StateViewController" customModule="DanielLeandro" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NfR-hh-h1K">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -342,12 +342,18 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="DolarChanged:" destination="ycS-13-R0r" eventType="editingDidEnd" id="k9D-bv-Ov9"/>
+                                </connections>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jIu-Mx-VFn">
                                 <rect key="frame" x="214" y="98" width="134" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="IOFChanged:" destination="ycS-13-R0r" eventType="editingDidEnd" id="3QH-Fd-THZ"/>
+                                </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Impostos por estado" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f1f-pz-d1m">
                                 <rect key="frame" x="104" y="150" width="169" height="21"/>
@@ -374,7 +380,7 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="brs-0U-KQ6" customClass="StateTableViewCell" customModule="ComprasUSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="brs-0U-KQ6" customClass="StateTableViewCell" customModule="DanielLeandro" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="322" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="brs-0U-KQ6" id="BWl-qy-l9j">
