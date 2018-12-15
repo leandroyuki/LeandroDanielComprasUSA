@@ -108,7 +108,9 @@ class RegistryProductViewController: UIViewController {
             //product = Product(context: context) (ta criando um produto novo antes de precisar, trocado de lugar)
         }
         
-        //state = State(context: context)
+        if state != nil{
+            state = State(context: context)
+        }
         
         pickerView.dataSource = self
         pickerView.delegate = self

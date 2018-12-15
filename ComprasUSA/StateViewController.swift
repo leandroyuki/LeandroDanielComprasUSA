@@ -38,27 +38,59 @@ class StateViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBOutlet weak var tvStateList: UITableView!
     
-    func showAlert() {
-        
-        let title = "Adicionar Estado"
+    func showAlert(state: State? = nil) {
+        var title = "Adicionar estado"
+        if(state != nil){
+            title = "Editar estado"
+        }
         let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
             let stateName = alert.textFields![0].text!
             let stateTax = alert.textFields![1].text!
-            let cat = State(context: self.context)
-            cat.name = stateName
-            cat.tax = Double(stateTax)!
+            
+            let name = stateName
+            if (stateName == "" || stateTax == ""){
+                self.present(ViewController.buildAlert(title:"Campos nao podem ser vazios!",message:"O estado e o imposto dele não devem ser vazios"), animated: true, completion: nil)
+                return
+            }
+            if let tax = Double(stateTax) {
+                if(tax <= 0){
+                    self.present(ViewController.buildAlert(title:"O imposto deve ser positivo e não nulo!",message:"Afinal, é imposto"), animated: true, completion: nil)
+                    return
+                }else{
+                    if(state == nil){
+                        let cat = State(context: self.context)
+                        cat.tax = tax
+                        cat.name = name
+                    }else{
+                        let cat = state
+                        cat!.tax = tax
+                        cat!.name = name
+                    }
+                }
+                }else{
+                self.present(ViewController.buildAlert(title:"O imposto deve ser um valor numerico!",message:"O valor deve ser apenas numeros para representar a porcentagem da facada"), animated: true, completion: nil)
+                return
+            }
+            //cat.tax = Double(stateTax)!
+            
             try! self.context.save()
             self.loadStates()
         }
         
         alert.addTextField { (textField) in
             textField.placeholder = "Nome do Estado"
+            if(state != nil){
+                textField.text = state?.name
+            }
         }
         
         alert.addTextField { (textField) in
-            textField.placeholder = "Imposto"
+            textField.placeholder = "Imposto (%)"
+            if(state != nil){
+                textField.text = String(state!.tax)
+            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
@@ -84,6 +116,11 @@ class StateViewController: UIViewController, UITableViewDelegate, UITableViewDat
         return 1
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let state = self.states[indexPath.row]
+        self.showAlert(state: state)
+        tableView.setEditing(false, animated: true)
+    }
     
     func tableView(_ tvStateList: UITableView, numberOfRowsInSection section: Int) -> Int {
         tvStateList.backgroundView = states.count == 0 ? label : nil
