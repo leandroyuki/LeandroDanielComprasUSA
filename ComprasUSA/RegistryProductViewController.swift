@@ -11,7 +11,8 @@ import CoreData
 class RegistryProductViewController: UIViewController {
     var product: Product!
     var state: State!
-    var list = ["A"]
+    var states: [State] = []
+    
     var fetchedResultController: NSFetchedResultsController<State>!
     
     let pickerView = UIPickerView(frame: .zero)
@@ -22,14 +23,60 @@ class RegistryProductViewController: UIViewController {
     @IBOutlet weak var tfProductState: UITextField!
 
     @IBAction func btAddState(_ sender: UIButton) {
+        let title = "Adicionar estado"
+        let alert = UIAlertController(title: title, message: "", preferredStyle: .alert)
         
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            let stateName = alert.textFields![0].text!
+            let stateTax = alert.textFields![1].text!
+            
+            let name = stateName
+            if (stateName == "" || stateTax == ""){
+                self.present(ViewController.buildAlert(title:"Campos nao podem ser vazios!",message:"O estado e o imposto dele não devem ser vazios"), animated: true, completion: nil)
+                return
+            }
+            if let tax = Double(stateTax) {
+                if(tax <= 0){
+                    self.present(ViewController.buildAlert(title:"O imposto deve ser positivo e não nulo!",message:"Afinal, é imposto"), animated: true, completion: nil)
+                    return
+                }else{
+                    let cat = State(context: self.context)
+                    cat.tax = tax
+                    cat.name = name
+                    self.state = cat
+                    self.tfProductState.text = name
+                }
+            }else{
+                self.present(ViewController.buildAlert(title:"O imposto deve ser um valor numerico!",message:"O valor deve ser apenas numeros para representar a porcentagem"), animated: true, completion: nil)
+                return
+            }
+            
+            
+            
+            try! self.context.save()
+            self.loadStates()
+
+        }
+       
+        alert.addTextField { (textField) in
+            textField.placeholder = "Nome do Estado"
+        }
+        
+        alert.addTextField { (textField) in
+            textField.placeholder = "Imposto (%)"
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancelar", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
     }
     
     @IBOutlet weak var tfProductValue: UITextField!
     @IBOutlet weak var swCreditCard: UISwitch!
     
     @IBAction func AddProductImage(_ sender: UIButton) {
-        let alert = UIAlertController(title: "Selecionar poster", message: "De onde você quer escolher o poster", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Selecionar foto", message: "Escolha entre tirar uma foto ou usar uma imagem da galeria", preferredStyle: .actionSheet)
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let cameraAction = UIAlertAction(title: "Câmera", style: .default) { (action) in
                 self.selectPicture(sourceType: .camera)
@@ -107,14 +154,15 @@ class RegistryProductViewController: UIViewController {
             print("criando um produto")
             //product = Product(context: context) (ta criando um produto novo antes de precisar, trocado de lugar)
         }
-        
-        if state != nil{
-            state = State(context: context)
-        }
+    
         
         pickerView.dataSource = self
         pickerView.delegate = self
         //loadStates()
+        self.loadStates()
+        /*if state != nil{
+         state = State(context: context)
+         }*/
         
         configureToolbar()
     }
@@ -145,13 +193,21 @@ class RegistryProductViewController: UIViewController {
     }
     
     @objc func done() {
-        let state = list[pickerView.selectedRow(inComponent: 0)]
-        tfProductState.text = state
+        let state = states[pickerView.selectedRow(inComponent: 0)]
+        tfProductState.text = state.name
         cancel()
     }
     
     @objc func cancel() {
         view.endEditing(true)
+    }
+    
+    func loadStates() {
+        let fetchRequest: NSFetchRequest<State> = State.fetchRequest()
+        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        states = try! context.fetch(fetchRequest)
+        //tfProductState.text.reloadData()
     }
 }
 
@@ -177,22 +233,6 @@ extension RegistryProductViewController: UIImagePickerControllerDelegate, UINavi
         }
         dismiss(animated: true, completion: nil)
     }
-    /*
-    private func loadStates() {
-        let fetchRequest: NSFetchRequest<State> = State.fetchRequest()
-        let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
-        fetchRequest.sortDescriptors = [sortDescriptor]
-        fetchedResultController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultController.delegate = self
-        
-        do {
-            try fetchedResultController.performFetch()
-            
-            print(try fetchedResultController.performFetch())
-        } catch {
-            print(error.localizedDescription)
-        }
-    }*/
 }
 
 extension RegistryProductViewController: UIPickerViewDataSource {
@@ -207,8 +247,8 @@ extension RegistryProductViewController: UIPickerViewDataSource {
 }
 
 extension RegistryProductViewController: UIPickerViewDelegate {
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return list[row]
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> State? {
+        return states[row]
     }
 }
 

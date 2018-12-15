@@ -92,6 +92,7 @@ class StateViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         loadVerifyDefaults()
+        self.loadStates()
     }
     
     @IBOutlet weak var tvStateList: UITableView!
