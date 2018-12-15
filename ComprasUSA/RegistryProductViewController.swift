@@ -50,12 +50,8 @@ class RegistryProductViewController: UIViewController {
                 self.present(ViewController.buildAlert(title:"O imposto deve ser um valor numerico!",message:"O valor deve ser apenas numeros para representar a porcentagem"), animated: true, completion: nil)
                 return
             }
-            
-            
-            
             try! self.context.save()
             self.loadStates()
-
         }
        
         alert.addTextField { (textField) in
@@ -112,8 +108,7 @@ class RegistryProductViewController: UIViewController {
         
         product.image = ivProductImage.image
 
-        //product.state = state
-        //product.value = Double(tfProductValue.text!)!
+      
         if(tfProductValue.text == "" || tfProductValue.text == nil){
             self.present(ViewController.buildAlert(title:"O produto deve ter um valor!",message:"Se voce ganhou não foi uma compra..."), animated: true, completion: nil)
             return
@@ -130,9 +125,13 @@ class RegistryProductViewController: UIViewController {
         }
         if(tfProductState.text == ""){
             self.present(ViewController.buildAlert(title:"O produto precisa de algum estado!",message:"Cadastre ou escolha um estado com seu devido imposto, produtos Duty Free entrarão na próxima versão do app ;)"), animated: true, completion: nil)
+            tfProductState.text = ""
             return
         }
-        product.state = state
+        
+        if(product.state == nil){            
+            product.state = state
+        }
         product.creditCard = swCreditCard.isOn
         
         do {
@@ -154,22 +153,17 @@ class RegistryProductViewController: UIViewController {
             tfProductValue.text = String(product.value)
             swCreditCard.isOn = product.creditCard
             tfProductState.text = product.state?.name
+            state = product.state
             ivProductImage.image = product.image as? UIImage
             btRegistryProduct.setTitle("Atualizar", for:.normal)            
         }else{
             print("criando um produto")
             //product = Product(context: context) (ta criando um produto novo antes de precisar, trocado de lugar)
         }
-    
         
         pickerView.dataSource = self
         pickerView.delegate = self
-        //loadStates()
         self.loadStates()
-        /*if state != nil{
-         state = State(context: context)
-         }*/
-        
         configureToolbar()
     }
     
@@ -261,6 +255,7 @@ extension RegistryProductViewController: UIPickerViewDataSource {
 
 extension RegistryProductViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        state = states[row]
         return states[row].name
     }
 }
