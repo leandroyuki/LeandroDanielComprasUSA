@@ -201,8 +201,10 @@ class RegistryProductViewController: UIViewController {
     @objc func done() {
         let position = pickerView.selectedRow(inComponent: 0)
         if(position == 0){
-            cancel()
-            return
+            if(states.count == 0){
+                cancel()
+                return
+            }
         }
         let state = states[position]
         tfProductState.text = state.name
@@ -218,7 +220,6 @@ class RegistryProductViewController: UIViewController {
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
         states = try! context.fetch(fetchRequest)
-        //tfProductState.text.reloadData()
     }
 }
 

@@ -24,10 +24,19 @@ class SumViewController: UIViewController {
         updateScreenValues()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        sumProductValues()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        updateScreenValues()
+    }
+    
     func updateScreenValues(){
-        lbRealSum.text = String(totalBRL)
-        
-        lbDolarSum.text = String(totalUSD)
+        lbRealSum.text = formatCurrency(value:totalBRL)
+        lbDolarSum.text = formatCurrency(value:totalUSD)
     }
     
     var fetchedResultController: NSFetchedResultsController<Product>!
@@ -50,10 +59,19 @@ class SumViewController: UIViewController {
             let dolar = ud.double(forKey: "dolar")
             totalBRL = 0
             totalUSD = 0
+            //ok, vamos la
             for product in products{
-                totalBRL += product.value
-                //var tax = product.state.tax ?? 1
                 var value:Double = product.value
+                totalUSD += value //valor do dolar segue bruto, sem impostos
+                
+                //o estado pode ter sido deletado, para nao apagar a compra do usuario calculamos sem o imposto do estado
+                if let tax = product.state?.tax{
+                    totalBRL += (value * dolar) + (value * dolar)*(iof/100)
+                }else{
+                    
+                }
+                
+                
                 if(product.creditCard || iof != 0){
                     totalUSD += (value * dolar) + (value * dolar)*(iof/100)
                     //totalUSD += (value * dolar * tax)
@@ -66,6 +84,16 @@ class SumViewController: UIViewController {
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    //pra referencia https://stackoverflow.com/questions/39458003/swift-3-and-numberformatter-currency-%C2%A4
+    func formatCurrency(value: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.maximumFractionDigits = 2
+        formatter.locale = Locale(identifier: Locale.current.identifier)
+        let result = formatter.string(from: value as NSNumber)
+        return result!
     }
 }
 
